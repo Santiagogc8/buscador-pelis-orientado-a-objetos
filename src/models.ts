@@ -17,6 +17,8 @@ class Peli { // Creamos la clase Peli que nos permitira saber la forma del objet
   duration_minutes: number;
 }
 
+type SearchOptions = { title?: string; tag?: string };
+
 class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la colleccion de peliculas
   async getAll(): Promise<Peli[]> { // Creamos el metodo getAll que nos dara todas las peliculas y retornara una promesa con un array de Peli. Este metodo es async
     return jsonfile.readFile("./pelis.json"); // Y retorna la lectura del json de manera asincrona. No es necesario usar await
@@ -57,11 +59,24 @@ class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la 
     }
   }
 
-  
+  async search(options: SearchOptions): Promise<Peli[]>{ // Creamos el metodo asincrono que recibe unas opciones del tipo SearchOptions y retorna una promesa con un array de Peli
+    const list = await this.getAll(); // Obtenemos toda la lista de pelis
 
-  // search(){
+    const filteredList = list.filter(p => { // Creamos una variable filteredList para copiar el filtro de la lista filtrada
+      let check = false; // Creamos una flag que valida cambia si se cumple con un filtro
 
-  // }
+      if(options.title){
+        // Se debe hacer el find y cambiar el flag a true en caso de que sea verdadero. No estoy seguro de si se puede agregar el valor. En plan. Flag = valor del find
+      }
+
+      if(options.tag){
+        // Se debe hacer el find y cambiar el flag a true en caso de que sea verdadero. No estoy seguro de si se puede agregar el valor. En plan. Flag = valor del find
+      }
+    })
+
+
+    return
+  }
 }
 
 async function main(){
@@ -81,6 +96,9 @@ async function main(){
   console.log(peliMal)
   const peliBien = await peli.add({id: 100, title: "Hola", director: "Hola", year: 1, tags: ["Hola", "Que", "Tal"], synopsis: "Si", duration_minutes: 12})
   console.log(peliBien);
+
+  console.log("Prueba de buscar peli: ------------------------------------------");
+
 }
 
 main()
