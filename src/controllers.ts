@@ -51,19 +51,4 @@ class PelisController { // Creamos la clase PelisController
   }
 }
 
-async function main() {
-  const pelis = new PelisController;
-
-  console.log("PRUEBA DE GET")
-  const adios = await pelis.get({search: {title: 'Star Wars'}});
-  console.log(adios);
-
-  console.log("PRUEBA DE GETONE")
-  const hola = await pelis.getOne({search: {title: 'Star Wars'}});
-  console.log(hola);
-}
-
-main();
-
-
 export { PelisController };

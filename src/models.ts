@@ -13,7 +13,6 @@ class Peli { // Creamos la clase Peli que nos permitira saber la forma del objet
   director: string;
   year: number;
   tags: string[];
-  synopsis: string;
   duration_minutes: number;
 }
 
@@ -36,7 +35,6 @@ class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la 
     const findPeli = await this.getById(peli.id); // Esperamos a que la funcion busque el elemento por id
 
     if(findPeli){ // Si getById retorna un truthy
-      console.log(`MENSAJE DESDE EL MODELS: La peli con id ${peli.id} ya existe`);
       return false; // Retorna false
     } else { // En caso contrario
       const data = { ...peli }; // Usamos el operador spread (...) para crear un nuevo objeto que copia todas las propiedades y valores del objeto peli.
@@ -46,7 +44,6 @@ class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la 
 
       await jsonfile.writeFile("./pelis.json", pelis); // Esperamos que jsonfile haga el write en pelis.json de las pelis (ya hecho string)
 
-      console.log(`MENSAJE DESDE EL MODELS: La peli con id ${peli.id} y titulo ${peli.title} fue agregada exitosamente`); // Mensaje solo para verificar
       return true; // Retornamos true
     }
   }
@@ -62,12 +59,13 @@ class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la 
       }
 
       if(options.tag){ // En caso de que options.title sea falsy, validamos si options.tag tiene algun valor
-        // Convertimos todas las tags a minúsculas y validamos si incluye la tag buscada (también en minúsculas)
-        check = check && peli.tags.map(tag => tag.toLowerCase()).includes(options.tag.toLowerCase()); 
+        // Convertimos todas las tags a minúsculas y validamos si alguna de las tags incluye la tag buscada (también en minúsculas)
+        check = check && peli.tags.some(tag => tag.toLowerCase() === options.tag.toLowerCase()); 
       }
 
       return check;
     });
+
     return filteredList
   }
 }

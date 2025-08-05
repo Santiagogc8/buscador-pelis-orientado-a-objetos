@@ -39,7 +39,6 @@ test.serial("Testeo el método getById", async (t) => {
     director: "Marce",
     year: 2025,
     tags: ["tt", "rr"],
-    synopsis: "Una simple sinopsis",
     duration_minutes: 120
   });
   const all = await collection.getAll();
@@ -57,7 +56,6 @@ test.serial("Testeo el método search", async (t) => {
     director: "Marce",
     year: 2025,
     tags: ["tt", "rr"],
-    synopsis: "Una simple sinopsis",
     duration_minutes: 120
   });
   await collection.add({
@@ -66,7 +64,6 @@ test.serial("Testeo el método search", async (t) => {
     director: "Marce",
     year: 2025,
     tags: ["yy", "uu"],
-    synopsis: "Una simple sinopsis",
     duration_minutes: 120
   });
   const all = await collection.getAll();

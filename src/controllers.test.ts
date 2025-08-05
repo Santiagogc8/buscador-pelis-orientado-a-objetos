@@ -27,7 +27,6 @@ test.serial("Testeo PelisController get id", async (t) => {
     director: 'Marce',
     year: 1,
     tags: ["classic", SOME_TAG],
-    synopsis: "Hola",
     duration_minutes: 1
   });
   const peli = await controller.getOne({ id: TEST_ID });
@@ -42,7 +41,6 @@ test.serial("Testeo PelisController search title", async (t) => {
     director: 'Marce',
     year: 1,
     tags: ["classic", SOME_TAG],
-    synopsis: "Hola",
     duration_minutes: 1
   });
 
@@ -59,7 +57,6 @@ test.serial("Testeo PelisController search tag", async (t) => {
     director: 'Marce',
     year: 1,
     tags: [SOME_TAG],
-    synopsis: "Hola",
     duration_minutes: 1
   });
   const pelis = await controller.get({
