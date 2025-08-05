@@ -67,10 +67,12 @@ class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la 
 
       if(options.title){
         // Se debe hacer el find y cambiar el flag a true en caso de que sea verdadero. No estoy seguro de si se puede agregar el valor. En plan. Flag = valor del find
+        
       }
 
       if(options.tag){
         // Se debe hacer el find y cambiar el flag a true en caso de que sea verdadero. No estoy seguro de si se puede agregar el valor. En plan. Flag = valor del find
+        
       }
     })
 
