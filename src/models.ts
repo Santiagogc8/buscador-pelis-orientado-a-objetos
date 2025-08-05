@@ -23,7 +23,7 @@ class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la 
     return jsonfile.readFile("./pelis.json"); // Y retorna la lectura del json de manera asincrona. No es necesario usar await
   };
 
-  async getById(id: number): Promise<Peli>{ // Creamos el metodo getById que recibe un parametro id de tipo number y retorna una promesa con una Peli
+  async getById(id: number): Promise<Peli | undefined>{ // Creamos el metodo getById que recibe un parametro id de tipo number y retorna una promesa con una Peli
     const pelis = await this.getAll(); // Guardamos la espera de obtener todas las pelis 
     const findPeli = pelis.find(p => p.id === id); // Hacemos un find de pelis y lo guardamos en la variable findPeli
 

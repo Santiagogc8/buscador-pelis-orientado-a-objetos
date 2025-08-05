@@ -33,8 +33,8 @@ async function main() { // Creamos la funcion main
   }
 
   if (command === 'search') { // Si command es igual a "search"
-    if(params.title && params.tag){
-      const result = await pController.get({search: {title: params.title, tag: params.tag}});
+    if(params.title && params.tag){ // Valida si params.title y params.tag existen 
+      const result = await pController.get({search: {title: params.title, tag: params.tag}}); // Espera el resultado de get con title y tag como parametros
       console.log(result);
       return;
     }
@@ -51,6 +51,9 @@ async function main() { // Creamos la funcion main
       return; // Terminamos la funcion
     }
   }
+
+  console.log(await pController.get());
+  return;
 }
 
 main();
