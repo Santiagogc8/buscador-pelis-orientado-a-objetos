@@ -24,7 +24,11 @@ test.serial("Testeo PelisController get id", async (t) => {
   await controller.add({
     id: TEST_ID,
     title: SOME_TITLE,
+    director: 'Marce',
+    year: 1,
     tags: ["classic", SOME_TAG],
+    synopsis: "Hola",
+    duration_minutes: 1
   });
   const peli = await controller.getOne({ id: TEST_ID });
   t.is(peli.title, SOME_TITLE);
@@ -35,7 +39,11 @@ test.serial("Testeo PelisController search title", async (t) => {
   await controller.add({
     id: TEST_ID,
     title: SOME_TITLE,
+    director: 'Marce',
+    year: 1,
     tags: ["classic", SOME_TAG],
+    synopsis: "Hola",
+    duration_minutes: 1
   });
 
   const pelis = await controller.get({ search: { title: TEST_ID.toString() } });
@@ -48,7 +56,11 @@ test.serial("Testeo PelisController search tag", async (t) => {
   await controller.add({
     id: SECOND_TEST_ID,
     title: "otra peli un poco más divertida",
+    director: 'Marce',
+    year: 1,
     tags: [SOME_TAG],
+    synopsis: "Hola",
+    duration_minutes: 1
   });
   const pelis = await controller.get({
     search: { title: "peli", tag: SOME_TAG },

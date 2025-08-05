@@ -1,4 +1,3 @@
-import { title } from "process";
 import { PelisCollection, Peli } from "./models";
 
 type Options = { // Creamos un type de options
@@ -25,6 +24,11 @@ class PelisController { // Creamos la clase PelisController
     };
 
     if(options?.search){ // Si options trae un search
+
+      if(options.search.title && options.search.tag){ // Si trae el title y la tag
+        return this.model.search({title: options.search.title, tag: options.search.tag}); // Retorna el search de title y tags
+      }
+
       if(options.search.title){ // Valida si trae solo un title
         return this.model.search({title: options.search.title}); // Y retorna el metodo search del model con el title como parametro
       }
@@ -32,17 +36,34 @@ class PelisController { // Creamos la clase PelisController
       if(options.search.tag){ // Si por otro lado, solo trae una tag
         return this.model.search({tag: options.search.tag}); // Retorna el search de la tag
       }
-
-      if(options.search.title && options.search.tag){ // Y si trae el title y la tag
-        return this.model.search({title: options.search.title, tag: options.search.tag}); // Retorna el search de title y tags
-      }
     }
     
-    return list;
+    return list; // Retornamos la lista completa en caso de que ninguna condicion se cumpla
   }
 
-  async getOne(){
+  async getOne(options: Options): Promise<Peli | undefined>{ // Creamos el metodo asincrono que solo muestra 1 resultado
+    const pelis = await this.get(options); // Esperamos el resultado de get
+    return pelis[0]; // Devuelve el primer elemento
+  }
 
+  async add(peli: Peli): Promise<boolean>{
+    return this.model.add(peli);
   }
 }
+
+async function main() {
+  const pelis = new PelisController;
+
+  console.log("PRUEBA DE GET")
+  const adios = await pelis.get({search: {title: 'Star Wars'}});
+  console.log(adios);
+
+  console.log("PRUEBA DE GETONE")
+  const hola = await pelis.getOne({search: {title: 'Star Wars'}});
+  console.log(hola);
+}
+
+main();
+
+
 export { PelisController };
