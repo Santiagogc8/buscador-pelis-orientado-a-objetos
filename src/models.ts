@@ -24,12 +24,12 @@ class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la 
     return jsonfile.readFile("./pelis.json"); // Y retorna la lectura del json de manera asincrona. No es necesario usar await
   };
 
-  async getById(id: number): Promise<Peli | boolean>{ // Creamos el metodo getById que recibe un parametro id de tipo number y retorna una promesa con una Peli o un string 
+  async getById(id: number): Promise<Peli>{ // Creamos el metodo getById que recibe un parametro id de tipo number y retorna una promesa con una Peli
     const pelis = await this.getAll(); // Guardamos la espera de obtener todas las pelis 
     const findPeli = pelis.find(p => p.id === id); // Hacemos un find de pelis y lo guardamos en la variable findPeli
 
     // Si peliEncontrada no es un falsy, retorna el objeto encontrado. Caso contrario, retorna un mensaje como fallback
-    return findPeli ? findPeli : false;
+    return findPeli;
   }
 
   async add(peli: Peli): Promise<boolean> { // Creamos el metodo asincrono para agregar peliculas que recibe un parametro peli de tipo Peli y retorna una promesa de tipo boolean
@@ -39,15 +39,7 @@ class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la 
       console.log(`MENSAJE DESDE EL MODELS: La peli con id ${peli.id} ya existe`);
       return false; // Retorna false
     } else { // En caso contrario
-      const data = { // Asignamos los valores al objeto literal
-        id: peli.id,
-        title: peli.title,
-        director: peli.director,
-        year: peli.year,
-        tags: peli.tags,
-        synopsis: peli.synopsis,
-        duration_minutes: peli.duration_minutes
-      }
+      const data = { ...peli }; // Usamos el operador spread (...) para crear un nuevo objeto que copia todas las propiedades y valores del objeto peli.
 
       const pelis = await this.getAll(); // Obtenemos todo el array de peliculas y lo guardamos en una variable
       pelis.push(data); // Pusheamos la data al array de peliculas
@@ -62,47 +54,22 @@ class PelisCollection { // Creamos la clase PelisCollection que nos mostrara la 
   async search(options: SearchOptions): Promise<Peli[]>{ // Creamos el metodo asincrono que recibe unas opciones del tipo SearchOptions y retorna una promesa con un array de Peli
     const list = await this.getAll(); // Obtenemos toda la lista de pelis
 
-    const filteredList = list.filter(p => { // Creamos una variable filteredList para copiar el filtro de la lista filtrada
-      let check = false; // Creamos una flag que valida cambia si se cumple con un filtro
+    const filteredList = [...list].filter(peli => { // Creamos una variable filteredList para copiar el filtro de la lista
+      let check = true; // Creamos una flag que valida cambia si se cumple con un filtro
 
-      if(options.title){
-        // Se debe hacer el find y cambiar el flag a true en caso de que sea verdadero. No estoy seguro de si se puede agregar el valor. En plan. Flag = valor del find
-        
+      if(options.title){ // Si options.title tiene algun valor
+        check = check && peli.title.toLowerCase().includes(options.title.toLowerCase()); // Le asignamos el valor de la validacion de includes con el options title como parametro en lowerCase a la flag con el valor de la flag
       }
 
-      if(options.tag){
-        // Se debe hacer el find y cambiar el flag a true en caso de que sea verdadero. No estoy seguro de si se puede agregar el valor. En plan. Flag = valor del find
-        
+      if(options.tag){ // En caso de que options.title sea falsy, validamos si options.tag tiene algun valor
+        // Convertimos todas las tags a minúsculas y validamos si incluye la tag buscada (también en minúsculas)
+        check = check && peli.tags.map(tag => tag.toLowerCase()).includes(options.tag.toLowerCase()); 
       }
-    })
 
-
-    return
+      return check;
+    });
+    return filteredList
   }
 }
-
-async function main(){
-
-  const peli = new PelisCollection
-
-  console.log("Prueba de obtener todas las pelis: ------------------------------------------");
-  const displayTodasPelis = await peli.getAll();
-  console.table(displayTodasPelis);
-
-  console.log("Prueba de peli por id: ------------------------------------------");
-  const peliPorId = await peli.getById(1);
-  console.table(peliPorId);
-
-  console.log("Prueba de agregar peli: ------------------------------------------");
-  const peliMal = await peli.add({id: 1, title: "Hola", director: "Hola", year: 1, tags: ["Hola", "Que", "Tal"], synopsis: "Si", duration_minutes: 12})
-  console.log(peliMal)
-  const peliBien = await peli.add({id: 100, title: "Hola", director: "Hola", year: 1, tags: ["Hola", "Que", "Tal"], synopsis: "Si", duration_minutes: 12})
-  console.log(peliBien);
-
-  console.log("Prueba de buscar peli: ------------------------------------------");
-
-}
-
-main()
 
 export { PelisCollection, Peli };
